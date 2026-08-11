@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace Discord
 {
@@ -17,15 +18,21 @@ namespace Discord
             return _contentProperty.Set;
         }
 
+        // Discord API v10 removed the singular "embed" field in favor of the "embeds" array.
         private readonly DiscordParameter<DiscordEmbed> _embedProperty = new();
-        [JsonProperty("embed")]
+        [JsonProperty("embeds")]
+        private List<DiscordEmbed> _embeds
+        {
+            get { return _embedProperty.Set ? new List<DiscordEmbed>() { _embedProperty.Value } : null; }
+        }
+
         public DiscordEmbed Embed
         {
             get { return _embedProperty; }
             set { _embedProperty.Value = value; }
         }
 
-        public bool ShouldSerializeEmbed()
+        public bool ShouldSerializeEmbeds()
         {
             return _embedProperty.Set;
         }

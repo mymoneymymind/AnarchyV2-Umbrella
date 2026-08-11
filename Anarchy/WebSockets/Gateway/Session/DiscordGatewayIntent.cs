@@ -19,6 +19,9 @@ namespace Discord.Gateway
         GuildMessageTyping = 1 << 11,
         DirectMessages = 1 << 12,
         DirectMessageReactions = 1 << 13,
-        DirectMessageTyping = 1 << 14
+        DirectMessageTyping = 1 << 14,
+        // API v10+: required (privileged) to receive non-empty message content fields
+        // (content, embeds, attachments, components) in gateway message events.
+        MessageContent = 1 << 15
     }
 }

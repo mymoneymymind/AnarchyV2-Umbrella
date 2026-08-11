@@ -41,7 +41,7 @@ namespace Discord
         /// <param name="method">HTTP method to use</param>
         /// <param name="endpoint">API endpoint (fx. /users/@me)</param>
         /// <param name="payload">JSON content</param>
-        private async Task<DiscordHttpResponse> SendAsync(HttpMethod method, string endpoint, HttpContent content = null)
+        private async Task<DiscordHttpResponse> SendAsync(HttpMethod method, string endpoint, HttpContent content = null, string reason = null)
         {
             if (!endpoint.StartsWith("https"))
                 endpoint = DiscordHttpUtil.BuildBaseUrl(_discordClient.Config.ApiVersion, _discordClient.Config.SuperProperties.ReleaseChannel) + endpoint;
@@ -58,6 +58,11 @@ namespace Discord
 
                     if (_discordClient.Token != null)
                         client.DefaultRequestHeaders.Add("Authorization", _discordClient.Token);
+
+                    // Discord API v10+ requires moderation reasons to be sent via the
+                    // X-Audit-Log-Reason header instead of a ?reason= query parameter.
+                    if (!string.IsNullOrEmpty(reason))
+                        client.DefaultRequestHeaders.Add("X-Audit-Log-Reason", reason);
 
                     if (_discordClient.User != null && _discordClient.User.Type == DiscordUserType.Bot)
                         client.DefaultRequestHeaders.Add("User-Agent", $"Anarchy/{AnarchyVersion}");
@@ -114,19 +119,19 @@ namespace Discord
             return await SendAsync(HttpMethod.Post, endpoint, MakeMultipartFormDataContent(props));
         }
 
-        public async Task<DiscordHttpResponse> DeleteAsync(string endpoint, object payload = null)
+        public async Task<DiscordHttpResponse> DeleteAsync(string endpoint, object payload = null, string reason = null)
         {
-            return await SendAsync(HttpMethod.Delete, endpoint, MakeStringContent(payload));
+            return await SendAsync(HttpMethod.Delete, endpoint, MakeStringContent(payload), reason);
         }
 
-        public async Task<DiscordHttpResponse> PutAsync(string endpoint, object payload = null)
+        public async Task<DiscordHttpResponse> PutAsync(string endpoint, object payload = null, string reason = null)
         {
-            return await SendAsync(HttpMethod.Put, endpoint, MakeStringContent(payload));
+            return await SendAsync(HttpMethod.Put, endpoint, MakeStringContent(payload), reason);
         }
 
-        public async Task<DiscordHttpResponse> PatchAsync(string endpoint, object payload = null)
+        public async Task<DiscordHttpResponse> PatchAsync(string endpoint, object payload = null, string reason = null)
         {
-            return await SendAsync(HttpMethod.Patch, endpoint, MakeStringContent(payload));
+            return await SendAsync(HttpMethod.Patch, endpoint, MakeStringContent(payload), reason);
         }
 
         private static HttpContent MakeStringContent(object payload)

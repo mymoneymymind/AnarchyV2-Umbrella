@@ -27,8 +27,21 @@ namespace Discord
         [JsonProperty("message_reference")]
         public MessageReference ReplyTo { get; set; }
 
-        [JsonProperty("embed")]
-        public DiscordEmbed Embed { get; set; }
+        // Discord API v10 removed the singular "embed" field in favor of the "embeds" array.
+        [JsonProperty("embeds")]
+        private List<DiscordEmbed> _embeds;
+
+        public DiscordEmbed Embed
+        {
+            get { return _embeds == null || _embeds.Count == 0 ? null : _embeds[0]; }
+            set
+            {
+                if (value == null)
+                    _embeds = null;
+                else
+                    _embeds = new List<DiscordEmbed>() { value };
+            }
+        }
 
         [JsonProperty("components")]
         public List<MessageComponent> Components { get; set; }

@@ -7,7 +7,7 @@ namespace Discord
         public IWebProxy Proxy { get; set; }
         public SuperProperties SuperProperties { get; set; } = new SuperProperties();
         public uint RestConnectionRetries { get; set; } = 0;
-        public uint ApiVersion { get; set; } = 9;
+        public uint ApiVersion { get; set; } = 10;
         public bool RetryOnRateLimit { get; set; } = true;
     }
 }

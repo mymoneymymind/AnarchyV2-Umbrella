@@ -86,7 +86,7 @@ namespace Discord
 
         public static async Task BanGuildMemberAsync(this DiscordClient client, ulong guildId, ulong userId, string reason = null, uint deleteMessageDays = 0)
         {
-            await client.HttpClient.PutAsync($"/guilds/{guildId}/bans/{userId}?delete-message-days={deleteMessageDays}&reason={reason}");
+            await client.HttpClient.PutAsync($"/guilds/{guildId}/bans/{userId}?delete-message-days={deleteMessageDays}", null, reason);
         }
 
         /// <summary>

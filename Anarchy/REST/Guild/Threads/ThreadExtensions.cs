@@ -56,10 +56,25 @@ namespace Discord
         public static IReadOnlyList<DiscordThreadMember> GetThreadMembers(this DiscordClient client, ulong threadId)
                 => client.GetThreadMembersAsync(threadId).GetAwaiter().GetResult();
 
-        public static async Task<IReadOnlyList<DiscordThread>> GetChannelActiveThreadsAsync(this DiscordClient client, ulong channelId)
-                => (await client.HttpClient.GetAsync($"/channels/{channelId}/threads/active")).Body.Value<JToken>("threads").ToObject<List<DiscordThread>>();
+        public static async Task<IReadOnlyList<DiscordThread>> GetGuildActiveThreadsAsync(this DiscordClient client, ulong guildId)
+                => (await client.HttpClient.GetAsync($"/guilds/{guildId}/threads/active")).Body.Value<JToken>("threads").ToObject<List<DiscordThread>>();
 
+        public static IReadOnlyList<DiscordThread> GetGuildActiveThreads(this DiscordClient client, ulong guildId)
+                => client.GetGuildActiveThreadsAsync(guildId).GetAwaiter().GetResult();
+
+        [Obsolete("Use GetGuildActiveThreadsAsync(guildId) — the /channels/{id}/threads/active route was removed in API v10.")]
+        public static async Task<IReadOnlyList<DiscordThread>> GetChannelActiveThreadsAsync(this DiscordClient client, ulong channelId)
+        {
+            // v10 decommissioned the channel-scoped route. Resolve the guild from the channel.
+            var channel = await client.GetChannelAsync(channelId);
+            var guildId = (channel as GuildChannel)?.GuildId ?? 0;
+            if (guildId == 0)
+                return new List<DiscordThread>();
+            return await client.GetGuildActiveThreadsAsync(guildId);
+        }
+
+        [Obsolete("Use GetGuildActiveThreads(guildId) — the /channels/{id}/threads/active route was removed in API v10.")]
         public static IReadOnlyList<DiscordThread> GetChannelActiveThreads(this DiscordClient client, ulong channelId)
-                => client.GetChannelActiveThreadsAsync(channelId).GetAwaiter().GetResult();
+            => client.GetChannelActiveThreadsAsync(channelId).GetAwaiter().GetResult();
     }
 }

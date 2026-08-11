@@ -1,0 +1,19 @@
+AnarchyV2 — a fork of Anarchy updated to Discord API v10.
+
+Original work:
+  Project : Anarchy
+  Author  : not-ilinked (https://github.com/not-ilinked/Anarchy)
+  License : The original repository ships with NO LICENSE file, therefore
+            the original code is "all rights reserved" by not-ilinked.
+
+This repository (AnarchyV2) is a derivative work that adapts the original
+source to Discord's API v10:
+  - message embeds serialized as the "embeds" array (singular "embed" removed in v10)
+  - moderation reasons sent via the X-Audit-Log-Reason header (query param removed in v10)
+  - active-threads fetched from the /guilds/{guild.id}/threads/active route (channel route removed in v10)
+  - added the MessageContent (1<<15) gateway intent
+  - default API version bumped 9 -> 10
+
+All modifications are made under the original author's credit. This NOTICE
+does not grant rights beyond what the original author permits; if you intend
+to redistribute, obtain permission from not-ilinked or a license from them.
