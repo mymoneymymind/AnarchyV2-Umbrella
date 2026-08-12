@@ -55,6 +55,8 @@ namespace Discord.Gateway
 
         public event ClientEventHandler<GuildEventArgs> OnGuildUpdated;
 
+        public event ClientEventHandler<OnboardingEventArgs> OnOnboardingUpdated;
+
         public event ClientEventHandler<InviteCreatedEventArgs> OnInviteCreated;
 
         public event ClientEventHandler<InviteDeletedEventArgs> OnInviteDeleted;
@@ -509,6 +511,14 @@ namespace Discord.Gateway
                                     GuildCache[guild.Id].Update(guild);
 
                                 Task.Run(() => OnGuildUpdated?.Invoke(this, new GuildEventArgs(guild)));
+                            }
+                            break;
+
+                        case "GUILD_ONBOARDING_UPDATE":
+                            if (OnOnboardingUpdated != null)
+                            {
+                                var onboarding = message.Data.ToObject<DiscordOnboarding>().SetClient(this);
+                                Task.Run(() => OnOnboardingUpdated?.Invoke(this, new OnboardingEventArgs(onboarding)));
                             }
                             break;
 
