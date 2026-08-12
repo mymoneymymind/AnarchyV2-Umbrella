@@ -58,9 +58,9 @@ These Discord features shipped *after* the upstream's last update (2023) and are
 
 ## License
 
-See [`LICENSE`](./LICENSE). The original `Anarchy` ships with **no license**
-(all rights reserved by `not-ilinked`); this derivative work inherits that
-status. Do not redistribute without the original author's permission.
+Licensed under the [MIT License](./LICENSE). The original `Anarchy` code is
+copyright (c) not-ilinked; this `AnarchyV2` adaptation is copyright (c)
+mymoneymymind. Both copyright notices are retained in the LICENSE file.
 
 ---
 
