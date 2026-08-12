@@ -56,13 +56,12 @@ The core library (`Anarchy/Anarchy.csproj`) and the example projects under
 
 ## Remaining gaps
 
-The following Discord features are **not yet** implemented in this fork:
+All major feature gaps have been implemented (see "Feature gaps added" above), including
+**Subscription API v2** (SKUs, subscription plans, entitlements v2, and the v2 subscription
+shapes). The only Discord features still absent are those shipped after this work that were
+out of scope:
 
-- **Subscription API v2** — only v1 entitlements (`DiscordEntitlement`) are present; the v2 subscription/sku flows are missing.
-
-All of the items previously listed here (Guild Scheduled Events, Auto Moderation,
-Onboarding, Polls, Soundboard, gradient role colors / guild tags, and the Go Live /
-voice E2EE rework) have since been implemented — see "Feature gaps added" above.
+- (none currently tracked — open an issue if you find one)
 
 ## License
 

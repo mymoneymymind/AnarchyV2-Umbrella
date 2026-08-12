@@ -20,6 +20,7 @@ source to Discord's API v10 and adds features missing from the upstream:
   - Guild Scheduled Events (CRUD + users + 5 gateway events)
   - Auto Moderation (rules CRUD, trigger/action types, 4 gateway events)
   - Go Live / voice E2EE rework to aead_xchacha20_poly1305_rtpsize
+  - Subscription API v2 (SKUs, subscription plans, entitlements v2, v2 subscription shapes)
 
 Updates and maintenance of this fork are credited to:
   yackinnn — https://t.me/yackinnn
