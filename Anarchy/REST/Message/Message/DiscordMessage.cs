@@ -130,6 +130,9 @@ namespace Discord
         [JsonProperty("sticker_items")]
         public IReadOnlyList<DiscordSticker> Stickers { get; private set; }
 
+        [JsonProperty("poll")]
+        public DiscordPoll Poll { get; private set; }
+
         private void Update(DiscordMessage updated)
         {
             Content = updated.Content;
@@ -256,6 +259,20 @@ namespace Discord
         {
             CrosspostAsync().GetAwaiter().GetResult();
         }
+
+        /// <summary>
+        /// Votes in this message's poll for the given answer(s).
+        /// </summary>
+        public async Task VoteInPollAsync(params uint[] answerIds)
+        {
+            if (Poll == null)
+                throw new InvalidOperationException("This message does not contain a poll");
+
+            await Client.VoteInPollAsync(Channel.Id, Id, answerIds);
+        }
+
+        public void VoteInPoll(params uint[] answerIds)
+            => VoteInPollAsync(answerIds).GetAwaiter().GetResult();
 
         public static implicit operator ulong(DiscordMessage instance)
         {

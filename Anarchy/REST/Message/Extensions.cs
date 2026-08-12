@@ -385,5 +385,21 @@ namespace Discord
                 response.Content.Headers.First(x => x.Key == "Content-Type").Value.First()
             );
         }
+
+        #region polls
+        /// <summary>
+        /// Votes in a poll on a message.
+        /// </summary>
+        /// <param name="answerIds">The answer IDs to vote for (multiple allowed when the poll permits multiselect).</param>
+        public static async Task VoteInPollAsync(this DiscordClient client, ulong channelId, ulong messageId, params uint[] answerIds)
+        {
+            await client.HttpClient.PostAsync($"/channels/{channelId}/polls/{messageId}/answers/{string.Join(",", answerIds)}");
+        }
+
+        public static void VoteInPoll(this DiscordClient client, ulong channelId, ulong messageId, params uint[] answerIds)
+        {
+            client.VoteInPollAsync(channelId, messageId, answerIds).GetAwaiter().GetResult();
+        }
+        #endregion
     }
 }

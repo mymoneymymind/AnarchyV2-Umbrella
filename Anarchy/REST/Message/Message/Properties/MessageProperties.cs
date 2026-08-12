@@ -46,6 +46,14 @@ namespace Discord
         [JsonProperty("components")]
         public List<MessageComponent> Components { get; set; }
 
+        [JsonProperty("poll")]
+        public PollProperties Poll { get; set; }
+
+        public bool ShouldSerializePoll()
+        {
+            return Poll != null;
+        }
+
         [JsonProperty("attachments")]
         public List<PartialDiscordAttachment> Attachments { get; set; }
 
