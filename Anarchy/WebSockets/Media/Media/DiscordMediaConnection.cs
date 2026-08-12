@@ -45,6 +45,9 @@ namespace Discord.Media
 
         private readonly DiscordSocketClient _parentClient;
 
+        // Encryption modes advertised by the media server in the Ready payload.
+        private List<string> _supportedEncryptionModes;
+
         public DiscordMediaConnection(DiscordSocketClient parentClient, ulong serverId, DiscordMediaServer server) : base("wss://" + server.Endpoint + "?v=4")
         {
             SSRC = new DiscordSSRC();
@@ -95,6 +98,8 @@ namespace Discord.Media
                         SSRC = new DiscordSSRC() { Audio = ready.SSRC };
                         ServerEndpoint = new IPEndPoint(IPAddress.Parse(ready.IP), ready.Port);
 
+                        _supportedEncryptionModes = ready.EncryptionModes;
+
                         UdpClient = new UdpClient();
                         UdpClient.Connect(ServerEndpoint);
 
@@ -103,7 +108,7 @@ namespace Discord.Media
                             Task.Run(() => StartListener());
                             Holepunch();
                         }
-                        else SelectProtocol(ServerEndpoint);
+                        else SelectProtocol(ServerEndpoint, ready.EncryptionModes);
                         break;
                     case DiscordMediaOpcode.SessionDescription:
                         var description = message.Data.ToObject<DiscordSessionDescription>();
@@ -172,8 +177,25 @@ namespace Discord.Media
             UdpClient.Send(payload, payload.Length);
         }
 
-        private void SelectProtocol(IPEndPoint localEndpoint)
+        private void SelectProtocol(IPEndPoint localEndpoint, List<string> supportedModes = null)
         {
+            // Discord deprecated xsalsa20_poly1305* and aead_aes256_gcm; the only mode left
+            // is aead_xchacha20_poly1305_rtpsize. Prefer it if the server offers it, otherwise
+            // fall back to the first mode the server reported (for maximum compatibility).
+            string mode = "aead_xchacha20_poly1305_rtpsize";
+
+            if (supportedModes != null && supportedModes.Count > 0)
+            {
+                if (supportedModes.Contains(mode))
+                    Sodium.EncryptionMode = mode;
+                else
+                    Sodium.EncryptionMode = supportedModes[0];
+            }
+            else
+            {
+                Sodium.EncryptionMode = mode;
+            }
+
             SendMessage(DiscordMediaOpcode.SelectProtocol, new MediaProtocolSelection()
             {
                 Protocol = "udp",
@@ -209,7 +231,7 @@ namespace Discord.Media
 
                         _localEndpoint = new IPEndPoint(IPAddress.Parse(ip), BitConverter.ToUInt16(new byte[] { received[received.Length - 1], received[received.Length - 2] }, 0));
 
-                        SelectProtocol(_localEndpoint);
+                        SelectProtocol(_localEndpoint, _supportedEncryptionModes);
                     }
                     else if (received[0] == 0x80 || received[0] == 0x90)
                     {

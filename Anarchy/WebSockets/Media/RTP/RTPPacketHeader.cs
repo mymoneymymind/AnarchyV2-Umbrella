@@ -49,8 +49,11 @@ namespace Discord.Media
 
         private static byte[] CreateNonce(byte[] header)
         {
-            byte[] nonce = new byte[header.Length * 2];
-            Buffer.BlockCopy(header, 0, nonce, 0, header.Length);
+            // aead_xchacha20_poly1305_rtpsize uses the 12-byte RTP header directly as the nonce.
+            // (Legacy xsalsa20_poly1305 duplicated the header to 24 bytes; we now always pass the
+            // 12-byte header and let Sodium choose the cipher based on the selected mode.)
+            byte[] nonce = new byte[HeaderLength];
+            Buffer.BlockCopy(header, 0, nonce, 0, HeaderLength);
             return nonce;
         }
 
