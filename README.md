@@ -6,6 +6,7 @@ Anarchy is an open source Discord API wrapper. It has REST, Gateway and media (a
 Examples can be found in the `.\Examples` folder.
 
 Documentation and a tutorial can be found [here](https://ilinked1337.gitbook.io/anarchy/).
+The original Anarchy Source was from 2022, so I decided to update it.
 
 # Source Code
 
