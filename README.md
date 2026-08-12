@@ -8,10 +8,13 @@ written in C#. Unlike most wrappers it also supports **user-account** endpoints.
 This repository (`AnarchyV2`) adapts the original source so it talks to
 Discord's current API surface.
 
-> ⚠️ **Discord Terms of Service:** user-account ("self-bot") automation violates
-> Discord's [Developer Terms of Service](https://discord.com/developers/docs/legal)
-> and ToS. Use bot accounts for anything you deploy. The user-account tooling here
-> is included for educational/authorized-lab purposes only.
+⚠️ **Discord Terms of Service:** user-account ("self-bot") automation violates
+Discord's [Developer Terms of Service](https://discord.com/developers/docs/legal)
+and ToS. Use bot accounts for anything you deploy. The user-account tooling here
+is included for educational/authorized-lab purposes only.
+
+The original Anarchy Source was from 2022, so I decided to update it.
+Documentation and a tutorial for the original can be found [here](https://ilinked1337.gitbook.io/anarchy/).
 
 ## What changed vs. upstream (API v10)
 
