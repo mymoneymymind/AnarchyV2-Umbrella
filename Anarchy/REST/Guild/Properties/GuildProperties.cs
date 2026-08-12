@@ -164,5 +164,18 @@ namespace Discord
         }
 
         public bool ShouldSerializeDescription() => _descParam.Set;
+
+        private readonly DiscordParameter<List<string>> GuildTagsProperty = new DiscordParameter<List<string>>();
+        [JsonProperty("guild_tags")]
+        public List<string> GuildTags
+        {
+            get { return GuildTagsProperty; }
+            set { GuildTagsProperty.Value = value; }
+        }
+
+        public bool ShouldSerializeGuildTags()
+        {
+            return GuildTagsProperty.Set;
+        }
     }
 }

@@ -68,6 +68,18 @@ namespace Discord
         [JsonProperty("public_updates_channel_id")]
         private ulong? _updateChannelId;
 
+        /// <summary>
+        /// The primary guild (home guild) information, if this guild is a "primary guild" / student hub.
+        /// </summary>
+        [JsonProperty("primary_guild")]
+        public PrimaryGuildInfo PrimaryGuild { get; private set; }
+
+        /// <summary>
+        /// Guild tags shown on the guild's profile (API vX).
+        /// </summary>
+        [JsonProperty("guild_tags")]
+        public IReadOnlyList<string> GuildTags { get; private set; }
+
         public MinimalTextChannel PublicUpdatesChannel
         {
             get

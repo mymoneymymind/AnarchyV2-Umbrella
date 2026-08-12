@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System.Collections.Generic;
+using System.Drawing;
 using Newtonsoft.Json;
 
 namespace Discord
@@ -52,6 +53,35 @@ namespace Discord
         public bool ShouldSerialize_color()
         {
             return ColorProperty.Set;
+        }
+
+        private readonly DiscordParameter<List<uint>> ColorsProperty = new DiscordParameter<List<uint>>();
+        [JsonProperty("colors")]
+        private List<uint> _colors
+        {
+            get { return ColorsProperty; }
+            set { ColorsProperty.Value = value; }
+        }
+        public List<Color> Colors
+        {
+            get
+            {
+                if (_colors == null)
+                    return null;
+                return _colors.ConvertAll(c => Color.FromArgb((int) c));
+            }
+            set
+            {
+                if (value == null)
+                    _colors = null;
+                else
+                    _colors = value.ConvertAll(c => (uint) Color.FromArgb(0, c.R, c.G, c.B).ToArgb());
+            }
+        }
+
+        public bool ShouldSerialize_colors()
+        {
+            return ColorsProperty.Set;
         }
 
         private readonly DiscordParameter<bool> SeperatedProperty = new DiscordParameter<bool>();
