@@ -23,6 +23,17 @@ Documentation and a tutorial for the original can be found [here](https://ilinke
 | Added the **`MessageContent` (1 << 15)** gateway intent | v10 requires it (privileged) to receive message content |
 | Default **`ApiVersion` bumped 9 → 10** | v9 is deprecated |
 
+### Feature gaps added (beyond the v10 fixes)
+
+- Gradient role colors (`Role.colors`), role tags, guild tags + `primary_guild` fields
+- Guild Onboarding (get/modify) + `GUILD_ONBOARDING_UPDATE` gateway event
+- Polls (`DiscordPoll` model, message poll field, send + vote)
+- Soundboard sounds (CRUD + send)
+- Guild Scheduled Events (CRUD + users + 5 gateway events)
+- Auto Moderation (rules CRUD, trigger/action types, 4 gateway events)
+- Go Live / voice E2EE rework to `aead_xchacha20_poly1305_rtpsize`
+
+Updates and maintenance of this fork are credited to **[yackinnn](https://t.me/yackinnn)**.
 See `NOTICE` for original-author attribution.
 
 ## Building

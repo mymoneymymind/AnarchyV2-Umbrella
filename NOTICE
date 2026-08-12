@@ -7,12 +7,22 @@ Original work:
             the original code is "all rights reserved" by not-ilinked.
 
 This repository (AnarchyV2) is a derivative work that adapts the original
-source to Discord's API v10:
+source to Discord's API v10 and adds features missing from the upstream:
   - message embeds serialized as the "embeds" array (singular "embed" removed in v10)
   - moderation reasons sent via the X-Audit-Log-Reason header (query param removed in v10)
   - active-threads fetched from the /guilds/{guild.id}/threads/active route (channel route removed in v10)
   - added the MessageContent (1<<15) gateway intent
   - default API version bumped 9 -> 10
+  - gradient role colors (Role.colors), role tags, guild tags + primary_guild fields
+  - Guild Onboarding (get/modify) + GUILD_ONBOARDING_UPDATE gateway event
+  - Polls (DiscordPoll model, message poll field, send + vote)
+  - Soundboard sounds (CRUD + send)
+  - Guild Scheduled Events (CRUD + users + 5 gateway events)
+  - Auto Moderation (rules CRUD, trigger/action types, 4 gateway events)
+  - Go Live / voice E2EE rework to aead_xchacha20_poly1305_rtpsize
+
+Updates and maintenance of this fork are credited to:
+  yackinnn — https://t.me/yackinnn
 
 All modifications are made under the original author's credit. This NOTICE
 does not grant rights beyond what the original author permits; if you intend
