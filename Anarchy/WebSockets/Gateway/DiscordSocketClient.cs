@@ -57,6 +57,12 @@ namespace Discord.Gateway
 
         public event ClientEventHandler<OnboardingEventArgs> OnOnboardingUpdated;
 
+        public event ClientEventHandler<ScheduledEventEventArgs> OnScheduledEventCreated;
+        public event ClientEventHandler<ScheduledEventEventArgs> OnScheduledEventUpdated;
+        public event ClientEventHandler<ScheduledEventEventArgs> OnScheduledEventDeleted;
+        public event ClientEventHandler<ScheduledEventUserEventArgs> OnScheduledEventUserAdded;
+        public event ClientEventHandler<ScheduledEventUserEventArgs> OnScheduledEventUserRemoved;
+
         public event ClientEventHandler<InviteCreatedEventArgs> OnInviteCreated;
 
         public event ClientEventHandler<InviteDeletedEventArgs> OnInviteDeleted;
@@ -519,6 +525,48 @@ namespace Discord.Gateway
                             {
                                 var onboarding = message.Data.ToObject<DiscordOnboarding>().SetClient(this);
                                 Task.Run(() => OnOnboardingUpdated?.Invoke(this, new OnboardingEventArgs(onboarding)));
+                            }
+                            break;
+
+                        case "GUILD_SCHEDULED_EVENT_CREATE":
+                            if (OnScheduledEventCreated != null)
+                            {
+                                var ev = message.Data.ToObject<DiscordScheduledEvent>().SetClient(this);
+                                Task.Run(() => OnScheduledEventCreated?.Invoke(this, new ScheduledEventEventArgs(ev)));
+                            }
+                            break;
+
+                        case "GUILD_SCHEDULED_EVENT_UPDATE":
+                            if (OnScheduledEventUpdated != null)
+                            {
+                                var ev = message.Data.ToObject<DiscordScheduledEvent>().SetClient(this);
+                                Task.Run(() => OnScheduledEventUpdated?.Invoke(this, new ScheduledEventEventArgs(ev)));
+                            }
+                            break;
+
+                        case "GUILD_SCHEDULED_EVENT_DELETE":
+                            if (OnScheduledEventDeleted != null)
+                            {
+                                var ev = message.Data.ToObject<DiscordScheduledEvent>().SetClient(this);
+                                Task.Run(() => OnScheduledEventDeleted?.Invoke(this, new ScheduledEventEventArgs(ev)));
+                            }
+                            break;
+
+                        case "GUILD_SCHEDULED_EVENT_USER_ADD":
+                            if (OnScheduledEventUserAdded != null)
+                            {
+                                var ev = message.Data.ToObject<DiscordScheduledEvent>().SetClient(this);
+                                var member = message.Data.Value<JToken>("member")?.ToObject<GuildMember>()?.SetClient(this);
+                                Task.Run(() => OnScheduledEventUserAdded?.Invoke(this, new ScheduledEventUserEventArgs(message.Data.Value<ulong>("guild_id"), ev, member)));
+                            }
+                            break;
+
+                        case "GUILD_SCHEDULED_EVENT_USER_REMOVE":
+                            if (OnScheduledEventUserRemoved != null)
+                            {
+                                var ev = message.Data.ToObject<DiscordScheduledEvent>().SetClient(this);
+                                var member = message.Data.Value<JToken>("member")?.ToObject<GuildMember>()?.SetClient(this);
+                                Task.Run(() => OnScheduledEventUserRemoved?.Invoke(this, new ScheduledEventUserEventArgs(message.Data.Value<ulong>("guild_id"), ev, member)));
                             }
                             break;
 
