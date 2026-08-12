@@ -54,15 +54,15 @@ The core library (`Anarchy/Anarchy.csproj`) and the example projects under
 > runs, but receives no security updates. Retargeting to `net8.0`/`net9.0` is
 > straightforward if you want a supported runtime.
 
-## Known gaps (not yet updated)
+## Remaining gaps
 
-These Discord features shipped *after* the upstream's last update (2023) and are
-**not** implemented in this fork:
+The following Discord features are **not yet** implemented in this fork:
 
-- Guild Scheduled Events, Auto Moderation, Onboarding
-- Polls, Soundboard, gradient role colors / guild tags
-- Subscription API v2 (only v1 entitlements are present)
-- Go Live / voice re-work for required E2EE encryption modes
+- **Subscription API v2** — only v1 entitlements (`DiscordEntitlement`) are present; the v2 subscription/sku flows are missing.
+
+All of the items previously listed here (Guild Scheduled Events, Auto Moderation,
+Onboarding, Polls, Soundboard, gradient role colors / guild tags, and the Go Live /
+voice E2EE rework) have since been implemented — see "Feature gaps added" above.
 
 ## License
 
