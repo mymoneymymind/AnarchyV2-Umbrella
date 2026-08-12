@@ -2,15 +2,15 @@
 by https://t.me/yackinnn
 
 
-A fork of [**Anarchy**](https://github.com/not-ilinked/Anarchy) — an open-source
+A fork of [**Anarchy**](https://github.com/not-ilinked/Anarchy) which was a very good open source API wrapper for Discord.
 Discord API wrapper for .NET — updated to **Discord API v10**.
 
-Anarchy is a lightweight, "raw" Discord API wrapper (REST + Gateway + media)
-written in C#. Unlike most wrappers it also supports **user-account** endpoints.
+Anarchy is a lightweight Discord API wrapper (REST + Gateway + media)
+written in C# - unlike most wrappers it also supports account endpoints.
 This repository (`AnarchyV2`) adapts the original source so it talks to
-Discord's current API surface.
+Discord's current API surface vs the old 2022 version.
 
-The original Anarchy Source was from 2022, so I decided to update it.
+That original Anarchy Source was from 2022, so I decided to update it.
 Documentation and a tutorial for the original can be found [here](https://ilinked1337.gitbook.io/anarchy/).
 
 ## What changed vs. upstream (API v10)
