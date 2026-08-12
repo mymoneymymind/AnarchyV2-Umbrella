@@ -63,6 +63,11 @@ namespace Discord.Gateway
         public event ClientEventHandler<ScheduledEventUserEventArgs> OnScheduledEventUserAdded;
         public event ClientEventHandler<ScheduledEventUserEventArgs> OnScheduledEventUserRemoved;
 
+        public event ClientEventHandler<AutoModRuleEventArgs> OnAutoModRuleCreated;
+        public event ClientEventHandler<AutoModRuleEventArgs> OnAutoModRuleUpdated;
+        public event ClientEventHandler<AutoModRuleEventArgs> OnAutoModRuleDeleted;
+        public event ClientEventHandler<AutoModActionExecutionEventArgs> OnAutoModActionExecuted;
+
         public event ClientEventHandler<InviteCreatedEventArgs> OnInviteCreated;
 
         public event ClientEventHandler<InviteDeletedEventArgs> OnInviteDeleted;
@@ -567,6 +572,38 @@ namespace Discord.Gateway
                                 var ev = message.Data.ToObject<DiscordScheduledEvent>().SetClient(this);
                                 var member = message.Data.Value<JToken>("member")?.ToObject<GuildMember>()?.SetClient(this);
                                 Task.Run(() => OnScheduledEventUserRemoved?.Invoke(this, new ScheduledEventUserEventArgs(message.Data.Value<ulong>("guild_id"), ev, member)));
+                            }
+                            break;
+
+                        case "AUTO_MODERATION_RULE_CREATE":
+                            if (OnAutoModRuleCreated != null)
+                            {
+                                var rule = message.Data.ToObject<DiscordAutoModRule>().SetClient(this);
+                                Task.Run(() => OnAutoModRuleCreated?.Invoke(this, new AutoModRuleEventArgs(rule)));
+                            }
+                            break;
+
+                        case "AUTO_MODERATION_RULE_UPDATE":
+                            if (OnAutoModRuleUpdated != null)
+                            {
+                                var rule = message.Data.ToObject<DiscordAutoModRule>().SetClient(this);
+                                Task.Run(() => OnAutoModRuleUpdated?.Invoke(this, new AutoModRuleEventArgs(rule)));
+                            }
+                            break;
+
+                        case "AUTO_MODERATION_RULE_DELETE":
+                            if (OnAutoModRuleDeleted != null)
+                            {
+                                var rule = message.Data.ToObject<DiscordAutoModRule>().SetClient(this);
+                                Task.Run(() => OnAutoModRuleDeleted?.Invoke(this, new AutoModRuleEventArgs(rule)));
+                            }
+                            break;
+
+                        case "AUTO_MODERATION_ACTION_EXECUTION":
+                            if (OnAutoModActionExecuted != null)
+                            {
+                                var exec = message.Data.ToObject<AutoModActionExecution>();
+                                Task.Run(() => OnAutoModActionExecuted?.Invoke(this, new AutoModActionExecutionEventArgs(exec)));
                             }
                             break;
 
